@@ -1,0 +1,9 @@
+SELECT
+A.`ID_Author` "ID_Author",
+`Author_Surname` AS "Author_Surname",
+`Author_Name` AS "Author_Name",
+`Author_Patronymic` AS "Author_Patronymic",
+COUNT(*) AS "Count_Books"
+FROM `mtm_authors_and_books` A 
+JOIN `authors` B ON A.`ID_Author` = B.`ID_Author`
+GROUP BY A.`ID_Author` HAVING `Count_Books` <= 6
