@@ -1,5 +1,6 @@
 <?php
 include "figures_classes.php";
+//include "function.php";
 ?>
 
 <html lang="ru">
@@ -11,6 +12,17 @@ include "figures_classes.php";
 	<pre>
 		<?php
 
+			echo "Результат сортировки фигур, полученных из файла, \n с предыдущего запуска, если есть";
+			echo "\n \r";
+			echo "\n \r";
+
+			$fileName = "objectFigure.txt";
+			// Чтение из файла
+			$dataGet = getFigureFromFile($fileName);
+			echoSortFigureAreaAndTitle($dataGet);
+
+			echo "\n \r";
+			echo "\n \r";
 			echo "Тест Список используемых заводов";
 			echo "\n \r";
 			echo "\n \r";
@@ -40,67 +52,36 @@ include "figures_classes.php";
 				echo "\n";
 			}
 
-			$fileName = "objectFigure.txt";
-
 			// Запись в файл
 			$dataPut = serialize($array);
 			file_put_contents($fileName, $dataPut);
 
+			unset($dataGet);
 			// Чтение из файла
-			if (file_exists($fileName)) {
-				if ($dataGet = file_get_contents($fileName)) {
-					try {
-						$dataGet = unserialize($dataGet);
-					} catch (Exception $e) {
-						echo "Объекты не обнаружены";
-					}
-				}
-			} else {
-				echo "Файла не существует";
-			}
+			$dataGet = getFigureFromFile($fileName);
 			$countDataGet = count($dataGet);
 
 			echo "\n \r";
 			echo "\n \r";
-			echo "Список случайно сформированных фигур фигур из файла";
+			echo "Список случайно сформированных фигур фигур из файла, \n если есть";
 			echo "\n \r";
 			echo "\n \r";
 
-			for ($i = 0; $i < $countDataGet; $i++) {
-				echo $dataGet[$i]->getTitle();
-				echo $dataGet[$i]->getFigureArea();
-				echo "\n";
-			}
-
-			echo "\n \r";
-			echo "\n \r";
-			echo "Результат сортировки фигур";
-			echo "\n \r";
-			echo "\n \r";
-
-			// Сортировка простым выбором
-			$RightBorder = $countDataGet;
-			for ($i = 0; $i < $countDataGet; $i++) {
-				$MinArea = $dataGet[0]->getFigureArea();
-				$Min = $dataGet[0];
-				$iMin = 0;
-				for ($j = 0; $j < $RightBorder; $j++) {
-					if ($dataGet[$j]->getFigureArea() < $MinArea) {
-						$MinArea = $dataGet[$j]->getFigureArea();
-						$Min = $dataGet[$j];
-						$iMin = $j;
-					}
+			if ($dataGet != NULL) {
+				for ($i = 0; $i < $countDataGet; $i++) {
+					echo $dataGet[$i]->getTitle();
+					echo $dataGet[$i]->getFigureArea();
+					echo "\n";
 				}
-				$dataGet[$iMin] = $dataGet[$RightBorder - 1];
-				$dataGet[$RightBorder - 1] = $Min;
-				$RightBorder--;
 			}
 
-			for ($i = 0; $i < $countDataGet; $i++) {
-				echo $dataGet[$i]->getTitle();
-				echo $dataGet[$i]->getFigureArea();
-				echo "\n";
-			}
+			echo "\n \r";
+			echo "\n \r";
+			echo "Результат сортировки фигур из файла, если есть";
+			echo "\n \r";
+			echo "\n \r";
+
+			echoSortFigureAreaAndTitle($dataGet);
 
 		?>
 	</pre>
